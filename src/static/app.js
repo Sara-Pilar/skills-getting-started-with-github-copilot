@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${details.description}</p>
           <p><strong>Schedule:</strong> ${details.schedule}</p>
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
+          <div class="participants-section">
+            <p class="participants-title"><strong>Participants (${details.participants.length}/${details.max_participants}):</strong></p>
+            <div class="participants-badges">
+              ${details.participants.map(participant => `<span class="badge">${participant}</span>`).join("")}
+            </div>
+          </div>
         `;
 
         activitiesList.appendChild(activityCard);
@@ -62,6 +68,12 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        // Actualizar la lista de actividades automáticamente
+        // Limpiar opciones del select excepto la primera
+        while (activitySelect.options.length > 1) {
+          activitySelect.remove(1);
+        }
+        fetchActivities();
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
